@@ -9,16 +9,17 @@ import authRouter from "./routes/authRoute.js";
 import jobsRouter from "./routes/jobsRoute.js";
 import userRouter from "./routes/userRoute.js";
 import morgan from "morgan";
+import { fileURLToPath } from "url";
+import { resolve, dirname } from "path";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 config();
 const app = express();
 app.use(express.json());
+app.use(express.static(resolve(__dirname, './front-end/build')));
 
 const port = process.env.PORT || 3000;
-
-const testController = (req, res) => {
-  throw new Error("test error");
-};
 
 if (process.env.NODE_ENV !== "production") {
   app.use(morgan("dev"));
@@ -27,6 +28,10 @@ if (process.env.NODE_ENV !== "production") {
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/jobs", jobsRouter);
 app.use("/api/v1/user", userRouter);
+
+app.get('*',  (req, res) => {
+  res.sendFile(resolve(__dirname, './front-end/build', 'index.html'));
+});
 
 app.use(notFoundHand);
 app.use(errorHandler);
