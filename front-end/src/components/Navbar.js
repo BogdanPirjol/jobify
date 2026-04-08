@@ -11,7 +11,6 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import logout from "../features/utils/logout.js";
 import triggerAlert from "../features/utils/triggerAlert.js";
-import { useEffect } from "react";
 
 const Navbar = () => {
   const dispatch = useDispatch();
